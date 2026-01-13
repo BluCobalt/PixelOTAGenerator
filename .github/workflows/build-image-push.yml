@@ -27,6 +27,6 @@ jobs:
           context: .
           push: true
           tags: |
-            ghcr.io/${{ github.repository }}:latest
-            ghcr.io/${{ github.repository }}:${{ github.sha }}
-            ghcr.io/${{ github.repository }}:${{ github.event.inputs.version }}
+            ghcr.io/blucobalt/pixelotagenerator:latest
+            ghcr.io/blucobalt/pixelotagenerator:${{ github.sha }}
+            ghcr.io/blucobalt/pixelotagenerator:${{ github.event.inputs.version }}

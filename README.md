@@ -5,7 +5,7 @@ PixelOTAGenerator is a tool that automates the process of AVBRoot-ing Pixel OTA 
 ```yaml
 service:
     pog:
-        image: ghcr.io/BluCobalt/PixelOTAGenerator:latest
+        image: ghcr.io/blucobalt/pixelotagenerator:latest
         container_name: pog
         volumes:
           - ./avbroot-input:/app/avbroot-input
