@@ -1,0 +1,10 @@
+*/
+
+!POG
+!tools
+!.gitignore
+!Dockerfile
+!README.md
+!LICENSE
+!pyproject.toml
+!requirements.txt

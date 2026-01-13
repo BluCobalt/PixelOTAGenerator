@@ -1,0 +1,11 @@
+[project]
+name = "pixelotagenerator"
+version = "0.1.0"
+description = "Add your description here"
+requires-python = ">=3.13"
+dependencies = [
+    "beautifulsoup4",
+    "requests",
+    "PyGithub",
+    "nuitka"
+]
