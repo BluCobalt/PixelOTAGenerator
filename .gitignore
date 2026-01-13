@@ -1,7 +1,8 @@
 */
 
-!POG
-!tools
+!POG/
+!tools/
+!.github/actions/build-image-push.yml
 !.gitignore
 !Dockerfile
 !README.md
