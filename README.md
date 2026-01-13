@@ -12,7 +12,7 @@ services:
           - ./output:/app/output
         environment:
           # comma separated list of devices to generate OTAs for, e.g. "tokay,tangorpro"
-          - POG_DEVICES="tokay,tangorpro"
+          - POG_DEVICES=tokay,tangorpro
           # interval in hours between checking for new upstream OTAs
           - POG_INTERVAL_HOURS=12
         restart: unless-stopped
