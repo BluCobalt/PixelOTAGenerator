@@ -73,10 +73,23 @@ class OTAHelper:
     def __init__(self, avbroot_input: ToolConfig, device_name: str, output_dir: str, temp_dir: str):
         self.toolconfig = avbroot_input
         self.device_name = device_name
-        self.known_versions = get_all_otas(device_name)
+        self.known_versions = []
         self.output_dir = output_dir
         self.temp_dir = temp_dir
-        pass
+
+        version = get_all_otas(device_name)
+
+        for v in version:
+            if "emea" in v[0].lower():
+                if os.environ.get("POG_ONLY_EMEA").lower() == "true":
+                    self.known_versions.append(v)
+                else:
+                    pass
+            else:
+                if os.environ.get("POG_ONLY_EMEA").lower() == "true":
+                    pass
+                else:
+                    self.known_versions.append(v)
 
     def newer_version_available(self) -> bool:
         latest_version = self.known_versions[-1]

@@ -15,6 +15,8 @@ services:
           - POG_DEVICES=tokay,tangorpro
           # interval in hours between checking for new upstream OTAs
           - POG_INTERVAL_HOURS=12
+          # prefer EMEA OTAs
+          - POG_ONLY_EMEA=True
         restart: unless-stopped
     webserver:
         image: caddy:latest
