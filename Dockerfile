@@ -10,7 +10,18 @@ COPY requirements.txt /app/requirements.txt
 RUN pip install --no-cache-dir -r /app/requirements.txt
 
 COPY POG /app/POG
-COPY tools /app/tools
+
+RUN mkdir /app/tools
+
+RUN wget -O /app/tools/avbroot.zip https://github.com/chenxiaolong/avbroot/releases/download/v3.24.1/avbroot-3.24.1-x86_64-unknown-linux-gnu.zip
+RUN unzip -j /app/tools/avbroot.zip avbroot -d /app/tools/
+
+RUN wget -O /app/tools/custota.zip https://github.com/chenxiaolong/Custota/releases/download/v5.21/custota-tool-5.21-x86_64-unknown-linux-gnu.zip
+RUN unzip -j /app/tools/custota.zip custota-tool -d /app/tools/
+
+RUN wget -O /app/tools/magiskboot.zip https://github.com/topjohnwu/Magisk/releases/download/v30.6/Magisk-v30.6.apk
+RUN unzip -j /app/tools/magiskboot.zip lib/x86_64/libmagiskboot.so -d /app/tools/ && mv /app/tools/libmagiskboot.so /app/tools/magiskboot && chmod +x /app/tools/magiskboot
+
 
 RUN set -eux; \
     mkdir -p /usr/local/bin; \
@@ -25,4 +36,4 @@ RUN mkdir /app/output /app/temp
 
 ENV PATH="/usr/local/bin:${PATH}"
 
-CMD ["python3", "-m", "POG", "/app/config.json"]
+CMD ["python3", "-m", "POG"]
