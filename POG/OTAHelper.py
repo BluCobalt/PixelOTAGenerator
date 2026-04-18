@@ -154,7 +154,7 @@ class OTAHelper:
     def patch(self, input_ota: str, output_ota: str, boot: str, data: ToolConfig) -> bool:
         logger.info("Patching OTA...")
         cmd = (f"avbroot ota patch --input {input_ota} --output {output_ota} --key-ota {data.ota_key_path}"
-               f" --key-avb {data.avb_key_path} --cert-ota {data.ota_cert_path} --prepatched {boot}")
+               f" --key-avb {data.avb_key_path} --cert-ota {data.ota_cert_path} --prepatched {boot} --ignore-prepatched-compat --ignore-prepatched-compat")
         result = subprocess.run(cmd, check=True, shell=True)
         logger.info("Patch complete.")
         return result.returncode == 0

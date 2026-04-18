@@ -13,7 +13,7 @@ COPY POG /app/POG
 
 RUN mkdir /app/tools
 
-RUN wget -O /app/tools/avbroot.zip https://github.com/chenxiaolong/avbroot/releases/download/v3.24.1/avbroot-3.24.1-x86_64-unknown-linux-gnu.zip
+RUN wget -O /app/tools/avbroot.zip https://github.com/chenxiaolong/avbroot/releases/download/v3.29.0/avbroot-3.29.0-x86_64-unknown-linux-gnu.zip
 RUN unzip -j /app/tools/avbroot.zip avbroot -d /app/tools/
 
 RUN wget -O /app/tools/custota.zip https://github.com/chenxiaolong/Custota/releases/download/v5.21/custota-tool-5.21-x86_64-unknown-linux-gnu.zip
