@@ -41,6 +41,9 @@ def extract_kmi_from_kernel(kernel_path: str) -> str | None:
 
 def get_kernel_link_from_kmi(kmi: str) -> str | None:
     logger.info("Checking GitHub for latest WildKernels/GKI_KernelSU_SUSFS release...")
+    if not kmi:
+        logger.error("No kmi provided to get_kernel_link_from_kmi()")
+        return None
     g = Github()
     repo = g.get_repo("WildKernels/GKI_KernelSU_SUSFS")
     # find latest non-testing release
@@ -57,17 +60,25 @@ def get_kernel_link_from_kmi(kmi: str) -> str | None:
         return None
     logger.info("Found! Release: %s created at %s", release.name, str(release.created_at))
     latest_assets = release.get_assets()
-    collected = []
+    pattern = re.compile(r'^\d+\.\d+\.\d+-android\d+-\d+-\d+-AnyKernel3.zip$')
+    collected: list[tuple[str, str]] = []
 
     for asset in latest_assets:
-        if kmi in asset.name:
-            collected.append((asset.name, asset.browser_download_url))
-    logger.warning("Choosing AnyKernel3")
-    candidates = [item for item in collected if "AnyKernel3" in item[0]]
-    logger.info("Found! %s at %s", candidates[-1][0], candidates[-1][1])
+        name = asset.name
+        # ensure kmi is present and filename strictly matches the expected pattern
+        if kmi in name and pattern.match(name):
+            collected.append((name, asset.browser_download_url))
+
+    if not collected:
+        logger.error("No matching AnyKernel3 assets found for kmi '%s' following expected naming convention.", kmi)
+        g.close()
+        return None
+
+    chosen_name, chosen_url = collected[-1]
+    logger.info("Found kernel asset: %s at %s", chosen_name, chosen_url)
     g.close()
-    return candidates[-1][1] if candidates else None
-    # return "https://github.com/WildKernels/GKI_KernelSU_SUSFS/releases/download/v1.5.12-r19/6.1.145-android14-2025-09-Normal-AnyKernel3.zip"
+    return chosen_url
+
 
 class OTAHelper:
     def __init__(self, avbroot_input: ToolConfig, device_name: str, output_dir: str, temp_dir: str):
@@ -122,8 +133,13 @@ class OTAHelper:
         kmi = extract_kmi_from_kernel(kernel_path)
         logger.info("Detected kmi from stock boot image: %s", kmi)
 
+        link = get_kernel_link_from_kmi(kmi)
+        if not link:
+            logger.error("Could not determine kernel download link for kmi: %s", kmi)
+            return None
+
         cmd_download = ["/usr/bin/sh", "-c",
-                        f"cd {self.temp_dir} && wget -O new_kernel.zip {get_kernel_link_from_kmi(kmi)}"]
+                        f"cd {self.temp_dir} && wget -O new_kernel.zip {link}"]
         logger.info("Downloading new kernel...")
         subprocess.run(cmd_download, check=True)
         logger.info("New kernel downloaded.")

@@ -1,4 +1,5 @@
 import logging
+import subprocess
 import sys
 import json
 import time
@@ -30,6 +31,7 @@ def process_device(device, toolcfg):
             logging.info("No newer version for %s", device)
     except Exception as e:
         logging.exception("Error while processing device %s: %s", device, e)
+        subprocess.run(["/usr/bin/sh", "-c", f"rm -rf /app/temp/*"], check=True)
 
 
 def main():
