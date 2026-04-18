@@ -62,8 +62,8 @@ def get_kernel_link_from_kmi(kmi: str) -> str | None:
     for asset in latest_assets:
         if kmi in asset.name:
             collected.append((asset.name, asset.browser_download_url))
-    logger.warning("Choosing Normal-AnyKernel3")
-    candidates = [item for item in collected if "Normal-AnyKernel3" in item[0]]
+    logger.warning("Choosing AnyKernel3")
+    candidates = [item for item in collected if "AnyKernel3" in item[0]]
     logger.info("Found! %s at %s", candidates[-1][0], candidates[-1][1])
     g.close()
     return candidates[-1][1] if candidates else None
